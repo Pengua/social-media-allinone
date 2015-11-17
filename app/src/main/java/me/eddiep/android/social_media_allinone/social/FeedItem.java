@@ -10,4 +10,8 @@ public interface FeedItem {
     void buildContent();
 
     CommentItem[] getComments();
+
+    int getNumberOfLikes();
+
+    String getTarget();
 }
