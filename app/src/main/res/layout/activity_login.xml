@@ -55,5 +55,47 @@
                 app:borderWidth="0dp"
                 />
         </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/continueButton"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:cardBackgroundColor="#16C3B6"
+            card_view:cardCornerRadius="2dp"
+            android:layout_margin="6dp"
+            card_view:cardElevation="4dp"
+            android:layout_gravity="center"
+            >
+
+            <TextView android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:paddingTop="8.5dp"
+                android:paddingBottom="8.5dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textColor="#fff"
+                android:fontFamily="sans-serif-medium"
+                android:text="CONTINUE WITH 0 NETWORKS" />
+        </android.support.v7.widget.CardView>
+
+        <!--
+        <Button
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            app:elevation="4dp"
+            android:background="#16C3B6"
+            android:textColor="#fff"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONTINUE WITH 0 NETWORKS"
+            android:layout_gravity="center"/>
+            -->
     </LinearLayout>
 </RelativeLayout>

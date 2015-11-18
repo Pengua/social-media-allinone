@@ -5,30 +5,84 @@ import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 
 public class LoginActivity extends Activity {
 
-    FloatingActionButton facebookButton;
-    FloatingActionButton twitterButton;
+    private CallbackManager facebookCallbackManager;
+    private FloatingActionButton facebookButton;
+    private FloatingActionButton twitterButton;
+    private CardView continueButton;
+    private int connectedNetworks = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        facebookCallbackManager = CallbackManager.Factory.create();
 
         if (getActionBar() != null)
             getActionBar().hide();
 
         facebookButton = (FloatingActionButton)findViewById(R.id.fButton);
         twitterButton = (FloatingActionButton)findViewById(R.id.tButton);
+        continueButton = (CardView)findViewById(R.id.continueButton);
 
         facebookButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_facebook).color(Color.WHITE));
         twitterButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_twitter).color(Color.WHITE));
+
+        facebookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().registerCallback(facebookCallbackManager, new FacebookCallback<LoginResult>() {
+
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        facebookButton.setEnabled(false);
+                        connectedNetworks++;
+                        continueButton.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+
+                    }
+                });
+
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Collections.singletonList("read_stream"));
+            }
+        });
+
+        continueButton.setClickable(true);
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO Go to next activity
+            }
+        });
     }
 
 
