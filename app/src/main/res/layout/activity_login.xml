@@ -8,8 +8,9 @@
     android:orientation="vertical">
 
     <TextView
-        android:text="Social Things"
-        android:textSize="70px"
+        android:text="Floe"
+        android:textStyle="bold"
+        android:textSize="60dp"
         android:textColor="#fff"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
@@ -20,14 +21,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <Button
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Facebook"/>
+            android:text="Login to your social networks"
+            android:gravity="center"
+            android:textSize="21dp"
+            android:textColor="#fff"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:gravity="center">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Twitter"/>
+            <android.support.design.widget.FloatingActionButton
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/fButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                app:backgroundTint="#3b5998"
+                app:rippleColor="#55d4ee"
+                app:elevation="4dp"
+                app:borderWidth="0dp"
+                />
+            <android.support.design.widget.FloatingActionButton
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/tButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="#55acee"
+                app:rippleColor="#55d4ee"
+                app:elevation="4dp"
+                app:borderWidth="0dp"
+                />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

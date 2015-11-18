@@ -1,17 +1,34 @@
 package me.eddiep.android.social_media_allinone;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 
 public class LoginActivity extends Activity {
 
+    FloatingActionButton facebookButton;
+    FloatingActionButton twitterButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if (getActionBar() != null)
+            getActionBar().hide();
+
+        facebookButton = (FloatingActionButton)findViewById(R.id.fButton);
+        twitterButton = (FloatingActionButton)findViewById(R.id.tButton);
+
+        facebookButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_facebook).color(Color.WHITE));
+        twitterButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_twitter).color(Color.WHITE));
     }
 
 
