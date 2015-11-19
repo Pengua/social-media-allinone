@@ -13,5 +13,7 @@ public interface FeedItem {
 
     int getNumberOfLikes();
 
+    String getOrigin();
+
     String getTarget();
 }
