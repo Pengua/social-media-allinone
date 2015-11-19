@@ -25,11 +25,9 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profile_image"
-                    android:layout_width="wrap_content"
+                    android:layout_width="52dp"
                     android:layout_height="52dp"
                     android:src="@drawable/ic_sex"
-                    android:layout_marginStart="-25dp"
-                    android:layout_marginEnd="-25dp"
                     app:civ_border_width="1dp"
                     app:civ_border_color="#FF000000"/>
 
@@ -113,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true">
                 <ImageButton
+                    android:id="@+id/fav_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_favorite_black_24dp"
@@ -133,6 +132,7 @@
                 android:layout_alignParentEnd="true">
 
                 <TextView
+                    android:id="@+id/comments_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="50 Comments"

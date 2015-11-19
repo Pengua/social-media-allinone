@@ -9,6 +9,7 @@ import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.joanzapata.iconify.IconDrawable;
@@ -20,6 +21,8 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+
+import me.eddiep.android.floe.social.AuthHolder;
 
 
 public class LoginActivity extends Activity {
@@ -40,6 +43,7 @@ public class LoginActivity extends Activity {
         instagrameButton = (FloatingActionButton)findViewById(R.id.fButton);
         twitterButton = (FloatingActionButton)findViewById(R.id.tButton);
         continueButton = (CardView)findViewById(R.id.continueButton);
+        final TextView continueButtonText = (TextView)findViewById(R.id.text);
 
         instagrameButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_question).color(Color.WHITE));
         twitterButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_twitter).color(Color.WHITE));
@@ -61,7 +65,14 @@ public class LoginActivity extends Activity {
                     public void success(Result<TwitterSession> result) {
                         TwitterSession session = result.data;
 
+                        AuthHolder.twitterEnabled = true;
+                        AuthHolder.twitterSession = session;
+
                         Toast.makeText(getApplicationContext(), "Logged in as " + session.getUserName(), Toast.LENGTH_LONG).show();
+
+                        AuthHolder.socialCount++;
+                        continueButtonText.setText("CONTINUE WITH " + AuthHolder.socialCount + " NETWORK" + (AuthHolder.socialCount == 1 ? "" : "s"));
+                        continueButton.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -76,7 +87,8 @@ public class LoginActivity extends Activity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Go to next activity
+                Intent intent = new Intent(LoginActivity.this, FeedActivity.class);
+                startActivity(intent);
             }
         });
     }

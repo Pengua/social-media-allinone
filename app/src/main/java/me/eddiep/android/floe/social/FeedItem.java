@@ -1,5 +1,7 @@
 package me.eddiep.android.floe.social;
 
+import android.widget.RelativeLayout;
+
 public interface FeedItem {
     String getAuthor();
 
@@ -7,7 +9,7 @@ public interface FeedItem {
 
     String getLocation();
 
-    void buildContent();
+    void buildContent(RelativeLayout view);
 
     CommentItem[] getComments();
 
