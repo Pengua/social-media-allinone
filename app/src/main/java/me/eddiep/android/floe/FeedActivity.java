@@ -1,8 +1,11 @@
 package me.eddiep.android.floe;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -18,6 +21,7 @@ import java.util.Objects;
 
 import me.eddiep.android.floe.social.AuthHolder;
 import me.eddiep.android.floe.social.FeedItem;
+import me.eddiep.android.floe.social.FeedListAdapter;
 import me.eddiep.android.floe.social.impl.CustomTwitterApiClient;
 import me.eddiep.android.floe.social.impl.TwitterFeedItem;
 
@@ -33,8 +37,14 @@ public class FeedActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_feed);
+
+        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(255, 92, 231, 221)));
+
         progressBar = (ProgressBar)findViewById(R.id.progress);
         feedList = (ListView)findViewById(R.id.feedList);
+        final FeedListAdapter adapter = new FeedListAdapter(this, items);
+        feedList.setAdapter(adapter);
 
 
         new Thread(new Runnable() {
@@ -55,7 +65,10 @@ public class FeedActivity extends Activity {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            finishLoading();
+                                            adapter.addAll(items);
+                                            adapter.notifyDataSetChanged();
+                                            feedList.setVisibility(View.VISIBLE);
+                                            progressBar.setVisibility(View.INVISIBLE);
                                         }
                                     });
                                 }
@@ -73,6 +86,5 @@ public class FeedActivity extends Activity {
     }
 
     private void finishLoading() {
-
     }
 }

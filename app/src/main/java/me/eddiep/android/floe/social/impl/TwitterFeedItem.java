@@ -20,7 +20,7 @@ public class TwitterFeedItem implements FeedItem {
     private String created_at;
     private String text;
     private TwitterUser user;
-    private int id;
+    private long id;
     private int retweet_count;
     private String in_reply_to_screen_name;
 
@@ -94,10 +94,15 @@ public class TwitterFeedItem implements FeedItem {
         return in_reply_to_screen_name != null;
     }
 
+    @Override
+    public String getAvatarUrl() {
+        return user.getProfileImage();
+    }
+
     private class TwitterUser {
         private String name;
         private String profile_image_url;
-        private int id;
+        private long id;
         private String location;
 
         public String getName() {
@@ -108,7 +113,7 @@ public class TwitterFeedItem implements FeedItem {
             return profile_image_url;
         }
 
-        public int getId() {
+        public long getId() {
             return id;
         }
 

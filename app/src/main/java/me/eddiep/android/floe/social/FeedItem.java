@@ -20,4 +20,6 @@ public interface FeedItem {
     String getTarget();
 
     boolean hasTarget();
+
+    String getAvatarUrl();
 }
