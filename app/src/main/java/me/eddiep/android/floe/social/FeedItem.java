@@ -11,6 +11,8 @@ public interface FeedItem {
 
     CommentItem[] getComments();
 
+    String getOrigin();
+
     int getNumberOfLikes();
 
     String getTarget();
