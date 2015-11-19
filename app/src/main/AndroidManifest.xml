@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.eddiep.android.social_media_allinone" >
+    package="me.eddiep.android.floe" >
 
     <application
         android:allowBackup="true"
@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".ApplicationEntry"
+            android:name="me.eddiep.android.floe.ApplicationEntry"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,9 +17,13 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name="me.eddiep.android.floe.LoginActivity"
             android:label="@string/app_name" >
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="04c5be9bf9c3e2dd9059d09d7316ef9e06504b3a" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

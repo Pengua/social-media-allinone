@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 android {
     compileSdkVersion 23
@@ -29,5 +44,7 @@ dependencies {
     compile 'com.joanzapata.iconify:android-iconify-material:2.1.0' // (v2.0.0)
     compile 'com.joanzapata.iconify:android-iconify-material-community:2.1.0' // (v1.2.65)
     compile 'com.joanzapata.iconify:android-iconify-material:2.1.0' // (v2.0.0)
-    compile 'com.facebook.android:facebook-android-sdk:4.6.0'
+    compile('com.twitter.sdk.android:twitter:1.10.0@aar') {
+        transitive = true;
+    }
 }

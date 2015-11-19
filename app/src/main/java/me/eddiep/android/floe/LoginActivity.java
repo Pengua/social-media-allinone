@@ -1,33 +1,31 @@
-package me.eddiep.android.social_media_allinone;
+package me.eddiep.android.floe;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
-
-import java.util.Arrays;
-import java.util.Collections;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 
 public class LoginActivity extends Activity {
 
-    private CallbackManager facebookCallbackManager;
-    private FloatingActionButton facebookButton;
+    private TwitterAuthClient client;
+    private FloatingActionButton instagrameButton;
     private FloatingActionButton twitterButton;
     private CardView continueButton;
     private int connectedNetworks = 0;
@@ -36,43 +34,41 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        facebookCallbackManager = CallbackManager.Factory.create();
-
         if (getActionBar() != null)
             getActionBar().hide();
 
-        facebookButton = (FloatingActionButton)findViewById(R.id.fButton);
+        instagrameButton = (FloatingActionButton)findViewById(R.id.fButton);
         twitterButton = (FloatingActionButton)findViewById(R.id.tButton);
         continueButton = (CardView)findViewById(R.id.continueButton);
 
-        facebookButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_facebook).color(Color.WHITE));
+        instagrameButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_question).color(Color.WHITE));
         twitterButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_twitter).color(Color.WHITE));
 
-        facebookButton.setOnClickListener(new View.OnClickListener() {
+        instagrameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().registerCallback(facebookCallbackManager, new FacebookCallback<LoginResult>() {
 
+            }
+        });
+
+        twitterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                client = new TwitterAuthClient();
+
+                Twitter.logIn(LoginActivity.this, new Callback<TwitterSession>() {
                     @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        facebookButton.setEnabled(false);
-                        connectedNetworks++;
-                        continueButton.setVisibility(View.VISIBLE);
+                    public void success(Result<TwitterSession> result) {
+                        TwitterSession session = result.data;
+
+                        Toast.makeText(getApplicationContext(), "Logged in as " + session.getUserName(), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
-                    public void onCancel() {
-
-                    }
-
-                    @Override
-                    public void onError(FacebookException error) {
-
+                    public void failure(TwitterException e) {
+                        Toast.makeText(LoginActivity.this, ":c " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
-
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Collections.singletonList("read_stream"));
             }
         });
 
@@ -84,6 +80,16 @@ public class LoginActivity extends Activity {
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (client != null) {
+            client.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
 
 
     @Override

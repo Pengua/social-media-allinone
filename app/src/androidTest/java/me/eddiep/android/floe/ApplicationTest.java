@@ -1,4 +1,4 @@
-package me.eddiep.android.social_media_allinone;
+package me.eddiep.android.floe;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

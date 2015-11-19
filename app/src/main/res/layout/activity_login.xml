@@ -49,7 +49,7 @@
                 android:id="@+id/tButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:backgroundTint="#55acee"
+                app:backgroundTint="#5baaf4"
                 app:rippleColor="#55d4ee"
                 app:elevation="4dp"
                 app:borderWidth="0dp"
