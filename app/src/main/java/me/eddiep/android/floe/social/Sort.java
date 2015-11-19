@@ -1,8 +1,5 @@
-package me.eddiep.android.social_media_allinone.social;
+package me.eddiep.android.floe.social;
 
-/**
- * Created by leec12 on 11/17/2015.
- */
 public class Sort {
 
     public static FeedItem[] chronoSort(FeedItem[] a){
