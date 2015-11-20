@@ -55,10 +55,9 @@ public class FeedListAdapter extends ArrayAdapter<FeedItem> {
             holder.source.setText("Twitter");
             holder.commentsText.setText(item.getNumberOfLikes() + " Retweets");
 
-            if (!holder.built) {
-                item.buildContent(holder.view);
-                holder.built = true;
-            }
+            holder.view.removeAllViews();
+            item.buildContent(holder.view);
+
             Picasso.with(getContext()).load(item.getAvatarUrl()).into(holder.profileImage);
         }
 

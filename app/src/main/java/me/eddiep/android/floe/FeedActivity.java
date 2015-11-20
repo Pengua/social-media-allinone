@@ -65,7 +65,6 @@ public class FeedActivity extends Activity {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            adapter.addAll(items);
                                             adapter.notifyDataSetChanged();
                                             feedList.setVisibility(View.VISIBLE);
                                             progressBar.setVisibility(View.INVISIBLE);
