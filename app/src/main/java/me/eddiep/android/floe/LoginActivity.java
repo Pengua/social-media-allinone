@@ -68,7 +68,7 @@ public class LoginActivity extends Activity {
                         AuthHolder.twitterEnabled = true;
                         AuthHolder.twitterSession = session;
 
-                        Toast.makeText(getApplicationContext(), "Logged in as " + session.getUserName(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Logged in as " + session.getUserName(), Toast.LENGTH_SHORT).show();
 
                         AuthHolder.socialCount++;
                         continueButtonText.setText("CONTINUE WITH " + AuthHolder.socialCount + " NETWORK" + (AuthHolder.socialCount == 1 ? "" : "s"));

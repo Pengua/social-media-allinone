@@ -4,17 +4,23 @@ import android.app.ActionBar;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import me.eddiep.android.floe.social.CommentItem;
 import me.eddiep.android.floe.social.FeedItem;
 
 public class TwitterFeedItem implements FeedItem {
+    private static final Pattern twitterUrl = Pattern.compile("https:\\/\\/t.co\\/[a-zA-Z0-9]*");
     private static final SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ");
 
     private String created_at;
@@ -59,14 +65,40 @@ public class TwitterFeedItem implements FeedItem {
         final float scale = view.getContext().getResources().getDisplayMetrics().density;
         int pixels = (int) (80 * scale + 0.5f);
 
+        String rawText = text;
+        Matcher m = twitterUrl.matcher(rawText);
+
+        String[] images = null;
+        if (m.find()) {
+            images = new String[m.groupCount()];
+            for (int i = 0; i < images.length; i++) {
+                images[i] = m.group(i);
+            }
+
+            rawText = rawText.replaceAll("https:\\/\\/t.co\\/[a-zA-Z0-9]*", "");
+        }
+
         TextView tweet = new TextView(view.getContext());
-        tweet.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        tweet.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         tweet.setMinHeight(pixels);
         tweet.setGravity(Gravity.CENTER_VERTICAL);
         tweet.setTextColor(Color.BLACK);
-        tweet.setText(text);
+        tweet.setText(rawText);
 
         view.addView(tweet);
+
+        if (images != null) {
+            for (String image1 : images) {
+                ImageView image = new ImageView(view.getContext());
+                ViewGroup.MarginLayoutParams parms = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                parms.setMargins((int) (10 * scale + 0.5f), (int) (15 * scale + 0.5f), (int) (10 * scale + 0.5f), 0);
+                image.setLayoutParams(parms);
+
+                Picasso.with(view.getContext()).load(image1).into(image);
+
+                view.addView(image);
+            }
+        }
     }
 
     @Override
