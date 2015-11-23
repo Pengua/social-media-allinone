@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,7 +43,7 @@ public class FeedListAdapter extends ArrayAdapter<FeedItem> {
             holder.location = (TextView)v.findViewById(R.id.location);
             holder.source = (TextView)v.findViewById(R.id.source);
             holder.commentsText = (TextView)v.findViewById(R.id.comments_text);
-            holder.view = (RelativeLayout)v.findViewById(R.id.post_content);
+            holder.view = (LinearLayout)v.findViewById(R.id.post_content);
             holder.favButton = (ImageButton)v.findViewById(R.id.fav_button);
 
             v.setTag(holder);
@@ -52,7 +53,7 @@ public class FeedListAdapter extends ArrayAdapter<FeedItem> {
         if (item != null) {
             holder.username.setText(item.getAuthor());
             holder.location.setText(item.getLocation());
-            holder.source.setText("Twitter");
+            holder.source.setText(item.getOrigin());
             holder.commentsText.setText(item.getNumberOfLikes() + " Retweets");
 
             holder.view.removeAllViews();
@@ -70,7 +71,7 @@ public class FeedListAdapter extends ArrayAdapter<FeedItem> {
         TextView location;
         TextView source;
         TextView commentsText;
-        RelativeLayout view;
+        LinearLayout view;
         boolean built = false;
         ImageButton favButton;
 

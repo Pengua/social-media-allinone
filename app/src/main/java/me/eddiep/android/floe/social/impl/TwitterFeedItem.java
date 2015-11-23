@@ -4,15 +4,21 @@ import android.app.ActionBar;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +35,7 @@ public class TwitterFeedItem implements FeedItem {
     private long id;
     private int retweet_count;
     private String in_reply_to_screen_name;
+    private TwitterEntity entities;
 
     @Override
     public String getAuthor() {
@@ -61,43 +68,68 @@ public class TwitterFeedItem implements FeedItem {
                 />
      */
     @Override
-    public void buildContent(RelativeLayout view) {
+    public void buildContent(LinearLayout view) {
         final float scale = view.getContext().getResources().getDisplayMetrics().density;
         int pixels = (int) (80 * scale + 0.5f);
 
-        String rawText = text;
+        String rawText = null;
+        try {
+            rawText = URLDecoder.decode(text, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         Matcher m = twitterUrl.matcher(rawText);
 
-        String[] images = null;
-        if (m.find()) {
-            images = new String[m.groupCount()];
-            for (int i = 0; i < images.length; i++) {
-                images[i] = m.group(i);
+        List<String> images = new ArrayList<>();
+        if (entities != null) {
+            if (entities.media != null) {
+                for (TwitterMediaEntity entity : entities.media) {
+                    images.add(entity.media_url);
+                    rawText = rawText.replace(entity.url, "");
+                }
             }
 
-            rawText = rawText.replaceAll("https:\\/\\/t.co\\/[a-zA-Z0-9]*", "");
+            if (entities.urls != null) {
+                for (TwitterURLEntity entity : entities.urls) {
+                    rawText = rawText.replace(entity.url, entity.display_url);
+                }
+            }
         }
 
-        TextView tweet = new TextView(view.getContext());
-        tweet.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        tweet.setMinHeight(pixels);
-        tweet.setGravity(Gravity.CENTER_VERTICAL);
-        tweet.setTextColor(Color.BLACK);
-        tweet.setText(rawText);
+        if (!rawText.trim().equals("")) {
+            TextView tweet = new TextView(view.getContext());
+            tweet.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            tweet.setMinHeight(pixels);
+            tweet.setGravity(Gravity.CENTER_VERTICAL);
+            tweet.setTextColor(Color.BLACK);
+            tweet.setText(rawText);
 
-        view.addView(tweet);
+            view.addView(tweet);
+        }
 
-        if (images != null) {
+        if (images.size() > 0) {
+            HorizontalScrollView scrollView = new HorizontalScrollView(view.getContext());
+            scrollView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            LinearLayout imageViews = new LinearLayout(view.getContext());
+            imageViews.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            scrollView.addView(imageViews);
+
             for (String image1 : images) {
                 ImageView image = new ImageView(view.getContext());
-                ViewGroup.MarginLayoutParams parms = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 parms.setMargins((int) (10 * scale + 0.5f), (int) (15 * scale + 0.5f), (int) (10 * scale + 0.5f), 0);
+                parms.gravity = Gravity.CENTER_HORIZONTAL;
+
                 image.setLayoutParams(parms);
 
                 Picasso.with(view.getContext()).load(image1).into(image);
 
-                view.addView(image);
+                imageViews.addView(image);
             }
+
+            view.addView(scrollView);
         }
     }
 
@@ -108,7 +140,7 @@ public class TwitterFeedItem implements FeedItem {
 
     @Override
     public String getOrigin() {
-        return "twitter";
+        return "Twitter";
     }
 
     @Override
@@ -152,5 +184,20 @@ public class TwitterFeedItem implements FeedItem {
         public String getLocation() {
             return location;
         }
+    }
+
+    private class TwitterEntity {
+        private TwitterMediaEntity media[];
+        private TwitterURLEntity urls[];
+    }
+
+    private class TwitterMediaEntity {
+        private String media_url;
+        private String url;
+    }
+
+    private class TwitterURLEntity {
+        private String display_url;
+        private String url;
     }
 }

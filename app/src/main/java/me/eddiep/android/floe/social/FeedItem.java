@@ -1,5 +1,6 @@
 package me.eddiep.android.floe.social;
 
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 public interface FeedItem {
@@ -9,7 +10,7 @@ public interface FeedItem {
 
     String getLocation();
 
-    void buildContent(RelativeLayout view);
+    void buildContent(LinearLayout view);
 
     CommentItem[] getComments();
 
