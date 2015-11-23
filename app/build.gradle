@@ -50,4 +50,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.google.api-client:google-api-client:1.19.1'
 }
