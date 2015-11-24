@@ -1,6 +1,8 @@
 package me.eddiep.android.floe.social.impl;
 
+import android.content.Intent;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -10,6 +12,7 @@ import org.jinstagram.entity.common.Images;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
 
+import me.eddiep.android.floe.ImageActivity;
 import me.eddiep.android.floe.social.AuthHolder;
 import me.eddiep.android.floe.social.CommentItem;
 import me.eddiep.android.floe.social.FeedItem;
@@ -44,7 +47,7 @@ public class InstagramFeedItem implements FeedItem {
         final float scale = view.getContext().getResources().getDisplayMetrics().density;
         view.setPadding(0, 0, 0, 0);
 
-        Images images = data.getImages();
+        final Images images = data.getImages();
 
         ImageView image = new ImageView(view.getContext());
         LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int)(200 * scale + 0.5f));
@@ -54,6 +57,16 @@ public class InstagramFeedItem implements FeedItem {
         image.setLayoutParams(parms);
 
         Picasso.with(view.getContext()).load(images.getStandardResolution().getImageUrl()).into(image);
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ImageActivity.class);
+                intent.putExtra("image_url", images.getStandardResolution().getImageUrl());
+                ImageActivity.IM_TO_LAZY = InstagramFeedItem.this;
+                view.getContext().startActivity(intent);
+            }
+        });
 
         view.addView(image);
     }

@@ -70,7 +70,7 @@ public class FeedActivity extends Activity {
                             synchronized (syncLock) {
                                 gotCount++;
                                 if (gotCount >= AuthHolder.socialCount) {
-                                    Sort.popSort(items);
+                                    Sort.trendSort(items);
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -107,7 +107,7 @@ public class FeedActivity extends Activity {
                         synchronized (syncLock) {
                             gotCount++;
                             if (gotCount >= AuthHolder.socialCount) {
-                                Sort.popSort(items);
+                                Sort.trendSort(items);
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {

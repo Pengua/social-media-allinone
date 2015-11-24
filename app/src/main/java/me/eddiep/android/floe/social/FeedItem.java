@@ -1,5 +1,6 @@
 package me.eddiep.android.floe.social;
 
+import android.os.Parcelable;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 

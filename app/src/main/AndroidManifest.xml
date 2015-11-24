@@ -35,6 +35,8 @@
                 <data android:scheme="floe" />
             </intent-filter>
         </activity>
+
+        <activity android:name="me.eddiep.android.floe.ImageActivity"></activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="04c5be9bf9c3e2dd9059d09d7316ef9e06504b3a" />

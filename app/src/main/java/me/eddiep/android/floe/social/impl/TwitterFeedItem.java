@@ -1,8 +1,12 @@
 package me.eddiep.android.floe.social.impl;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -27,13 +31,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import me.eddiep.android.floe.ImageActivity;
 import me.eddiep.android.floe.social.AuthHolder;
 import me.eddiep.android.floe.social.CommentItem;
 import me.eddiep.android.floe.social.FeedItem;
 
 public class TwitterFeedItem implements FeedItem {
     private static final Pattern twitterUrl = Pattern.compile("https:\\/\\/t.co\\/[a-zA-Z0-9]*");
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy");
 
     private String created_at;
     private String text;
@@ -127,7 +132,7 @@ public class TwitterFeedItem implements FeedItem {
 
             scrollView.addView(imageViews);
 
-            for (String image1 : images) {
+            for (final String image1 : images) {
                 ImageView image = new ImageView(view.getContext());
                 LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 parms.setMargins((int) (10 * scale + 0.5f), (int) (15 * scale + 0.5f), (int) (10 * scale + 0.5f), 0);
@@ -136,6 +141,18 @@ public class TwitterFeedItem implements FeedItem {
                 image.setLayoutParams(parms);
 
                 Picasso.with(view.getContext()).load(image1).into(image);
+
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(view.getContext(), ImageActivity.class);
+                        intent.putExtra("image_url", image1);
+
+                        ImageActivity.IM_TO_LAZY = TwitterFeedItem.this;
+
+                        view.getContext().startActivity(intent);
+                    }
+                });
 
                 imageViews.addView(image);
             }
