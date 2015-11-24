@@ -26,7 +26,7 @@ import me.eddiep.android.floe.social.AuthHolder;
 
 
 public class LoginActivity extends Activity {
-    private static final String INSTAGRAM_AUTH_URL = "https://instagram.com/oauth/authorize/?client_id=d3952a7dd1ab4d1180d14ce18c18a44d&redirect_uri=floe://insta.log&response_type=token&scope=follower_list+public_content";
+    private static final String INSTAGRAM_AUTH_URL = "https://instagram.com/oauth/authorize/?client_id=d3952a7dd1ab4d1180d14ce18c18a44d&redirect_uri=floe://insta.log&response_type=token&scope=follower_list+public_content+likes";
 
 
     private TwitterAuthClient client;

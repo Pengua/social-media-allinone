@@ -11,6 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.models.Tweet;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -22,6 +27,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import me.eddiep.android.floe.social.AuthHolder;
 import me.eddiep.android.floe.social.CommentItem;
 import me.eddiep.android.floe.social.FeedItem;
 
@@ -36,6 +42,8 @@ public class TwitterFeedItem implements FeedItem {
     private int retweet_count;
     private String in_reply_to_screen_name;
     private TwitterEntity entities;
+    private boolean retweeted;
+    private TwitterFeedItem retweeted_status;
 
     @Override
     public String getAuthor() {
@@ -164,6 +172,32 @@ public class TwitterFeedItem implements FeedItem {
     @Override
     public String getAvatarUrl() {
         return user.getProfileImage();
+    }
+
+    @Override
+    public String getCommentName() {
+        return "Retweets";
+    }
+
+    @Override
+    public boolean doesLike() {
+        return retweeted;
+    }
+
+    @Override
+    public void like(final Runnable callback) {
+        CustomTwitterApiClient client = new CustomTwitterApiClient(AuthHolder.twitterSession);
+        client.getStatusesService().retweet(id, true, new Callback<Tweet>() {
+            @Override
+            public void success(Result<Tweet> result) {
+                callback.run();
+            }
+
+            @Override
+            public void failure(TwitterException e) {
+
+            }
+        });
     }
 
     private class TwitterUser {

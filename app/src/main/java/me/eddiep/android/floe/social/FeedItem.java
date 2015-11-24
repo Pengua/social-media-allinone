@@ -23,4 +23,10 @@ public interface FeedItem {
     boolean hasTarget();
 
     String getAvatarUrl();
+
+    String getCommentName();
+
+    boolean doesLike();
+
+    void like(final Runnable callback);
 }

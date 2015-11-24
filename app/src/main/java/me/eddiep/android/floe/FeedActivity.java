@@ -51,7 +51,7 @@ public class FeedActivity extends Activity {
 
         progressBar = (ProgressBar)findViewById(R.id.progress);
         feedList = (ListView)findViewById(R.id.feedList);
-        final FeedListAdapter adapter = new FeedListAdapter(this, items);
+        final FeedListAdapter adapter = new FeedListAdapter(this, items, this);
         feedList.setAdapter(adapter);
 
 

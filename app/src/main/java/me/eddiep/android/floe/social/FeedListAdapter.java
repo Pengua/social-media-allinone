@@ -1,6 +1,9 @@
 package me.eddiep.android.floe.social;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +22,11 @@ import me.eddiep.android.floe.R;
 
 public class FeedListAdapter extends ArrayAdapter<FeedItem> {
     LayoutInflater vi;
-    public FeedListAdapter(Context context, List<FeedItem> objects) {
+    Activity owner;
+    public FeedListAdapter(Context context, List<FeedItem> objects, Activity owner) {
         super(context, -1, objects);
         vi = LayoutInflater.from(getContext());
+        this.owner = owner;
     }
 
     @Override
@@ -49,12 +54,35 @@ public class FeedListAdapter extends ArrayAdapter<FeedItem> {
             v.setTag(holder);
         }
 
-        FeedItem item = getItem(position);
+        final FeedItem item = getItem(position);
         if (item != null) {
             holder.username.setText(item.getAuthor());
             holder.location.setText(item.getLocation());
             holder.source.setText(item.getOrigin());
-            holder.commentsText.setText(item.getNumberOfLikes() + " Retweets");
+            holder.commentsText.setText(item.getNumberOfLikes() + " " + item.getCommentName());
+
+            if (item.doesLike()) {
+                holder.favButton.setColorFilter(Color.argb(255, 210, 49, 50));
+            } else {
+                holder.favButton.setColorFilter(Color.argb(255, 129, 127, 121));
+            }
+
+            holder.favButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    item.like(new Runnable() {
+                        @Override
+                        public void run() {
+                            owner.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    notifyDataSetChanged();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
 
             holder.view.removeAllViews();
             item.buildContent(holder.view);

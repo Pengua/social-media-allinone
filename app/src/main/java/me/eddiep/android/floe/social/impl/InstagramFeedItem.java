@@ -8,7 +8,9 @@ import com.squareup.picasso.Picasso;
 
 import org.jinstagram.entity.common.Images;
 import org.jinstagram.entity.users.feed.MediaFeedData;
+import org.jinstagram.exceptions.InstagramException;
 
+import me.eddiep.android.floe.social.AuthHolder;
 import me.eddiep.android.floe.social.CommentItem;
 import me.eddiep.android.floe.social.FeedItem;
 
@@ -84,5 +86,32 @@ public class InstagramFeedItem implements FeedItem {
     @Override
     public String getAvatarUrl() {
         return data.getUser().getProfilePictureUrl();
+    }
+
+    @Override
+    public String getCommentName() {
+        return "Comments";
+    }
+
+    @Override
+    public boolean doesLike() {
+        return data.isUserHasLiked();
+    }
+
+    @Override
+    public void like(final Runnable callback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    AuthHolder.instagramSession.setUserLike(data.getId());
+                    data.setUserHasLiked(true);
+                } catch (InstagramException e) {
+                    e.printStackTrace();
+                }
+
+                callback.run();
+            }
+        }).start();
     }
 }
