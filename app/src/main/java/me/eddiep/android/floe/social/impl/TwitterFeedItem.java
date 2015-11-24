@@ -70,6 +70,9 @@ public class TwitterFeedItem implements FeedItem {
     @Override
     public void buildContent(LinearLayout view) {
         final float scale = view.getContext().getResources().getDisplayMetrics().density;
+
+        view.setPadding((int)(20 * scale + 0.5f), 0, (int)(20 * scale + 0.5f), 0);
+
         int pixels = (int) (80 * scale + 0.5f);
 
         String rawText = null;

@@ -15,7 +15,10 @@ import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.services.StatusesService;
 
+import org.jinstagram.entity.users.basicinfo.UserInfoData;
+import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
+import org.jinstagram.entity.users.feed.UserFeedData;
 import org.jinstagram.exceptions.InstagramException;
 
 import java.util.ArrayList;
@@ -25,7 +28,9 @@ import java.util.Objects;
 import me.eddiep.android.floe.social.AuthHolder;
 import me.eddiep.android.floe.social.FeedItem;
 import me.eddiep.android.floe.social.FeedListAdapter;
+import me.eddiep.android.floe.social.Sort;
 import me.eddiep.android.floe.social.impl.CustomTwitterApiClient;
+import me.eddiep.android.floe.social.impl.InstagramFeedItem;
 import me.eddiep.android.floe.social.impl.TwitterFeedItem;
 
 public class FeedActivity extends Activity {
@@ -65,6 +70,7 @@ public class FeedActivity extends Activity {
                             synchronized (syncLock) {
                                 gotCount++;
                                 if (gotCount >= AuthHolder.socialCount) {
+                                    Sort.popSort(items);
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -86,9 +92,32 @@ public class FeedActivity extends Activity {
 
                 if (AuthHolder.instagramEnabled) {
                     try {
-                        List<MediaFeedData> items = AuthHolder.instagramSession.getUserFeeds().getData();
+                        List<FeedItem> allRecents = new ArrayList<FeedItem>();
+                        UserInfoData[] follows = AuthHolder.instagramSession.getUserFollows().getData();
+                        for (UserInfoData data : follows) {
+                            List<MediaFeedData> feed = AuthHolder.instagramSession.getRecentMediaFeed(data.getId()).getData();
 
+                            for (MediaFeedData temp : feed) {
+                                InstagramFeedItem item = new InstagramFeedItem(temp);
+                                allRecents.add(item);
+                            }
+                        }
 
+                        items.addAll(allRecents);
+                        synchronized (syncLock) {
+                            gotCount++;
+                            if (gotCount >= AuthHolder.socialCount) {
+                                Sort.popSort(items);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        adapter.notifyDataSetChanged();
+                                        feedList.setVisibility(View.VISIBLE);
+                                        progressBar.setVisibility(View.INVISIBLE);
+                                    }
+                                });
+                            }
+                        }
 
                     } catch (InstagramException e) {
                         e.printStackTrace();

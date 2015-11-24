@@ -26,7 +26,7 @@ import me.eddiep.android.floe.social.AuthHolder;
 
 
 public class LoginActivity extends Activity {
-    private static final String INSTAGRAM_AUTH_URL = "https://instagram.com/oauth/authorize/?client_id=d3952a7dd1ab4d1180d14ce18c18a44d&redirect_uri=floe://insta.log&response_type=token";
+    private static final String INSTAGRAM_AUTH_URL = "https://instagram.com/oauth/authorize/?client_id=d3952a7dd1ab4d1180d14ce18c18a44d&redirect_uri=floe://insta.log&response_type=token&scope=follower_list+public_content";
 
 
     private TwitterAuthClient client;
@@ -84,6 +84,7 @@ public class LoginActivity extends Activity {
                         AuthHolder.socialCount++;
                         continueButtonText.setText("CONTINUE WITH " + AuthHolder.socialCount + " NETWORK" + (AuthHolder.socialCount == 1 ? "" : "s"));
                         continueButton.setVisibility(View.VISIBLE);
+                        twitterButton.setEnabled(false);
                     }
 
                     @Override
@@ -104,7 +105,7 @@ public class LoginActivity extends Activity {
         });
 
         if (AuthHolder.socialCount > 0) {
-            continueButtonText.setText("CONTINUE WITH " + AuthHolder.socialCount + " NETWORK" + (AuthHolder.socialCount == 1 ? "" : "s"));
+            continueButtonText.setText("CONTINUE WITH " + AuthHolder.socialCount + " NETWORK" + (AuthHolder.socialCount == 1 ? "" : "S"));
             continueButton.setVisibility(View.VISIBLE);
         }
     }

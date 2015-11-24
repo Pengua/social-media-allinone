@@ -40,20 +40,20 @@ public class InstagramFeedItem implements FeedItem {
     @Override
     public void buildContent(LinearLayout view) {
         final float scale = view.getContext().getResources().getDisplayMetrics().density;
+        view.setPadding(0, 0, 0, 0);
 
         Images images = data.getImages();
 
         ImageView image = new ImageView(view.getContext());
-        LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, (int)(200 * scale + 0.5f));
+        LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int)(200 * scale + 0.5f));
         parms.gravity = Gravity.CENTER_HORIZONTAL;
+        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         image.setLayoutParams(parms);
 
         Picasso.with(view.getContext()).load(images.getStandardResolution().getImageUrl()).into(image);
 
         view.addView(image);
-
-        view.setPadding(0, 0, 0, 0);
     }
 
     @Override
