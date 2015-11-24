@@ -21,7 +21,7 @@ public class InstagramLoginActivity extends Activity {
         if (intent != null) {
             Uri data = intent.getData();
             if (data != null) {
-                String[] split = data.getPath().split("#");
+                String[] split = data.toString().split("#");
                 if (split.length > 1) {
                     String token = split[1];
                     Instagram instagram = new Instagram(new Token(token, "6c3427ced9ab40c79c6fd25310e8900b"));
