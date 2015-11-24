@@ -190,6 +190,7 @@ public class TwitterFeedItem implements FeedItem {
         client.getStatusesService().retweet(id, true, new Callback<Tweet>() {
             @Override
             public void success(Result<Tweet> result) {
+                retweeted = true;
                 callback.run();
             }
 
