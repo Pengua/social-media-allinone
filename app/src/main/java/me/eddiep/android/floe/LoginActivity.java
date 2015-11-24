@@ -3,6 +3,7 @@ package me.eddiep.android.floe;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
@@ -20,18 +21,18 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import me.eddiep.android.floe.social.AuthHolder;
 
 
 public class LoginActivity extends Activity {
+    private static final String INSTAGRAM_AUTH_URL = "https://instagram.com/oauth/authorize/?client_id=d3952a7dd1ab4d1180d14ce18c18a44d&redirect_uri=floe://insta.log&response_type=token";
+
 
     private TwitterAuthClient client;
     private FloatingActionButton instagrameButton;
     private FloatingActionButton twitterButton;
     private CardView continueButton;
-    private int connectedNetworks = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +46,23 @@ public class LoginActivity extends Activity {
         continueButton = (CardView)findViewById(R.id.continueButton);
         final TextView continueButtonText = (TextView)findViewById(R.id.text);
 
-        instagrameButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_question).color(Color.WHITE));
+        instagrameButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_instagram).color(Color.WHITE));
         twitterButton.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_twitter).color(Color.WHITE));
+
+        if (AuthHolder.twitterSession != null) {
+            twitterButton.setEnabled(false);
+        }
+
+        if (AuthHolder.instagramSession != null) {
+            instagrameButton.setEnabled(false);
+        }
+
 
         instagrameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(INSTAGRAM_AUTH_URL));
+                startActivity(browserIntent);
             }
         });
 
@@ -91,6 +102,11 @@ public class LoginActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        if (AuthHolder.socialCount > 0) {
+            continueButtonText.setText("CONTINUE WITH " + AuthHolder.socialCount + " NETWORK" + (AuthHolder.socialCount == 1 ? "" : "s"));
+            continueButton.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -15,6 +15,9 @@ import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.services.StatusesService;
 
+import org.jinstagram.entity.users.feed.MediaFeedData;
+import org.jinstagram.exceptions.InstagramException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -79,6 +82,17 @@ public class FeedActivity extends Activity {
 
                         }
                     });
+                }
+
+                if (AuthHolder.instagramEnabled) {
+                    try {
+                        List<MediaFeedData> items = AuthHolder.instagramSession.getUserFeeds().getData();
+
+
+
+                    } catch (InstagramException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }).start();

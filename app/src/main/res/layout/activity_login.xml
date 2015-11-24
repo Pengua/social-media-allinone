@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/flow_text"
         android:text="Floe"
         android:textStyle="bold"
         android:textSize="60dp"
@@ -15,6 +16,14 @@
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_launcher"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/flow_text"
+        android:layout_marginTop="20dp"/>
 
     <LinearLayout
         android:layout_alignParentBottom="true"
@@ -40,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 app:backgroundTint="#3b5998"
-                app:rippleColor="#55d4ee"
+                app:rippleColor="#5079cf"
                 app:elevation="4dp"
                 app:borderWidth="0dp"
                 />
